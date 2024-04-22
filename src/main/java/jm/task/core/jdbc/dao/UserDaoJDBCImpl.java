@@ -29,8 +29,8 @@ public class UserDaoJDBCImpl implements UserDao {
                 "lastName VARCHAR(50) NOT NULL," +
                 "age TINYINT NOT NULL)";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(createTableSQL);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
+            preparedStatement.execute();
             System.out.println("Таблица пользователей успешно создана");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,8 +41,8 @@ public class UserDaoJDBCImpl implements UserDao {
 
         String dropTableSQL = "DROP TABLE IF EXISTS user";
 
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(dropTableSQL);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(dropTableSQL)) {
+            preparedStatement.execute();
             System.out.println("Таблица пользователей успешно удалена");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,7 +71,6 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(removeUserSQL)) {
             preparedStatement.setLong(1, id);
 
-            // Выполняем запрос на удаление
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
                 System.out.println("Пользователь с ID " + id + " успешно удален");

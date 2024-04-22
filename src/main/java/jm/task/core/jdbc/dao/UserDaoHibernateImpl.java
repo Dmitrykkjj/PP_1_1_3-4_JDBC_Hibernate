@@ -2,9 +2,9 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             transaction = session.beginTransaction();
             String sql = "INSERT INTO User (name, lastName, age) VALUES (:name, :lastName, :age)";
-            SQLQuery query = session.createSQLQuery(sql);
+            Query query = session.createSQLQuery(sql);
             query.setParameter("name", name);
             query.setParameter("lastName", lastName);
             query.setParameter("age", age);
@@ -86,7 +86,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             transaction = session.beginTransaction();
             String sql = "DELETE FROM User WHERE id = :id";
-            SQLQuery query = session.createSQLQuery(sql);
+            Query query = session.createSQLQuery(sql);
             query.setParameter("id", id);
             query.executeUpdate();
             transaction.commit();
@@ -128,7 +128,7 @@ public class UserDaoHibernateImpl implements UserDao {
         try {
             transaction = session.beginTransaction();
             String sql = "TRUNCATE TABLE User";
-            SQLQuery query = session.createSQLQuery(sql);
+            Query query = session.createSQLQuery(sql);
             query.executeUpdate();
             transaction.commit();
             System.out.println("Users table has been cleaned");
