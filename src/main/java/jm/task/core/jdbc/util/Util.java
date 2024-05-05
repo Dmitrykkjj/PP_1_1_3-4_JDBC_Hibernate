@@ -1,5 +1,9 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
+import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
+import jm.task.core.jdbc.service.UserService;
+import jm.task.core.jdbc.service.UserServiceImpl;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -17,6 +21,13 @@ public class Util {
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    public static UserService userServiceOf(DaoType daoType) {
+        return switch (daoType) {
+            case JDBC -> new UserServiceImpl(new UserDaoJDBCImpl());
+            case HIBERNATE -> new UserServiceImpl(new UserDaoHibernateImpl());
+        };
     }
 
     public static SessionFactory provideSessionFactory() {

@@ -10,12 +10,11 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-    public UserServiceImpl(DaoType daoType) {
-        this.userDao = switch (daoType) {
-            case JDBC -> new UserDaoJDBCImpl();
-            case HIBERNATE -> new UserDaoHibernateImpl();
-        };
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
+
+
 
     private final UserDao userDao;
 
