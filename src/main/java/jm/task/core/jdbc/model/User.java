@@ -15,17 +15,6 @@ public class User {
     public User() {
     }
 
-    public User(String name, String lastName, Byte age) {
-        this.name = name;
-        this.lastName = lastName;
-        this.age = age;
-    }
-
-    public User(long id, String name, String lastName, Byte age) {
-        this(name, lastName, age);
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
     }
@@ -56,6 +45,49 @@ public class User {
 
     public void setAge(Byte age) {
         this.age = age;
+    }
+
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private String lastName;
+        private Byte age;
+
+        private Builder() {
+        }
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder age(int age) {
+            this.age = (byte) age;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.setName(this.name);
+            user.setLastName(this.lastName);
+            user.setAge(this.age);
+            return user;
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override

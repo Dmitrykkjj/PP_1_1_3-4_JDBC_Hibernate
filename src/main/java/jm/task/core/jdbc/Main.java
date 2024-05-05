@@ -1,25 +1,56 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
+import jm.task.core.jdbc.service.UserService;
+import jm.task.core.jdbc.service.UserServiceImpl;
+import jm.task.core.jdbc.util.DaoType;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        UserDaoHibernateImpl userDaoHibernate = new UserDaoHibernateImpl();
-        userDaoHibernate.dropUsersTable();
-        userDaoHibernate.createUsersTable();
 
-        userDaoHibernate.saveUser("Ivan", "Ivanov", (byte) 22);
-        userDaoHibernate.saveUser("Petr", "Petrov", (byte) 25);
-        userDaoHibernate.saveUser("Alexey", "Alexeev", (byte) 30);
-        userDaoHibernate.saveUser("Sergey", "Sergeev", (byte) 35);
-        userDaoHibernate.removeUserById(1);
-        userDaoHibernate.saveUser("Alexey", "Ivanov", (byte) 45);
+        UserService userService = new UserServiceImpl(DaoType.HIBERNATE);
 
-        List<User> users = userDaoHibernate.getAllUsers();
+        userService.dropUsersTable();
+        userService.createUsersTable();
+
+        List<User> userList = List.of(
+                User.builder()
+                        .name("Ivan")
+                        .lastName("Ivanov")
+                        .age(22)
+                        .build(),
+                User.builder()
+                        .name("Petr")
+                        .lastName("Petrov")
+                        .age(25)
+                        .build(),
+                User.builder()
+                        .name("Alexey")
+                        .lastName("Alexeev")
+                        .age(30)
+                        .build(),
+                User.builder()
+                        .name("Sergey")
+                        .lastName("Sergeev")
+                        .age(30)
+                        .build()
+        );
+        userList.forEach(userService::saveUser);
+        userService.removeUserById(userList.get(1).getId());
+        userService.saveUser(
+                User.builder()
+                        .name("Alexey")
+                        .lastName("Ivanov")
+                        .age(45)
+                        .build()
+        );
+
+        List<User> users = userService.getAllUsers();
 
         users.stream()
                 .sorted(Comparator.comparing(User::getAge))
