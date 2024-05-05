@@ -25,15 +25,15 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS user (" +
                 "id INT AUTO_INCREMENT PRIMARY KEY," +
-                "name VARCHAR(50) NOT NULL," +
-                "lastName VARCHAR(50) NOT NULL," +
+                "name VARCHAR(255) NOT NULL," +
+                "lastName VARCHAR(255) NOT NULL," +
                 "age TINYINT NOT NULL)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
             preparedStatement.execute();
             System.out.println("Таблица пользователей успешно создана");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Таблица пользователей уже существует" + e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.execute();
             System.out.println("Таблица пользователей успешно удалена");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Таблица пользователей уже отсутствует" + e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class UserDaoJDBCImpl implements UserDao {
             System.out.println("Добавлено " + rowsAffected + " записей");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при добавлении пользователя: " + e.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ public class UserDaoJDBCImpl implements UserDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при удалении пользователя: " + e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class UserDaoJDBCImpl implements UserDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при получении списка пользователей: " + e.getMessage());
         }
 
         return userList;
@@ -116,7 +116,7 @@ public class UserDaoJDBCImpl implements UserDao {
             System.out.println("Таблица пользователей очищена");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Ошибка при очистке таблицы пользователей: " + e.getMessage());
         }
     }
 }
